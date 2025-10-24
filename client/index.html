@@ -10,60 +10,52 @@
     </head>
     <body class="p-3">
         <div class="max-w-xl mx-auto">
-            <!-- Input + Add/Edit -->
             <div class="flex gap-2 mb-3">
                 <input type="text" id="task-input" class="input join-item" placeholder="Enter task..." />
                 <button class="btn join-item" id="add-btn">Add Task</button>
             </div>
 
-            <!-- Stats -->
             <div class="border p-3 mb-3" id="stats">
                 Total tasks: <span id="total">0</span><br />
                 Pending: <span id="pending">0</span><br />
                 Completed: <span id="completed">0</span>
             </div>
 
-            <!-- Todo list -->
-            <div id="todo-list">
-                <!-- HTMX will inject todo items here -->
-            </div>
+            <div id="todo-list"></div>
         </div>
 
         <script>
             const API_BASE = "http://localhost:8800";
 
-            // Helper: fetch todos and render
             function loadTodos() {
                 fetch(`${API_BASE}/todo`)
                     .then((res) => res.json())
                     .then((data) => {
                         const container = document.getElementById("todo-list");
-                        container.innerHTML = ""; // clear old
+                        container.innerHTML = "";
                         let total = 0,
                             pending = 0,
                             completed = 0;
 
                         data.todos.forEach((todo) => {
                             total++;
-                            if (todo.isCompleted) completed++;
-                            else pending++;
+                            todo.isCompleted ? completed++ : pending++;
 
                             const todoEl = document.createElement("div");
                             todoEl.className = "flex justify-between my-3 p-3 border-1 todo-item";
                             todoEl.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" ${todo.isCompleted ? "checked" : ""} />
-                        <span class="text-3xl text-primary ${todo.isCompleted ? "line-through text-gray-400" : ""}">
-                            ${todo.item}
-                        </span>
-                    </div>
-                    <div>
-                        <button class="btn btn-success">Edit</button>
-                        <button class="btn btn-secondary">Delete</button>
-                    </div>
-                `;
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" ${todo.isCompleted ? "checked" : ""} />
+                                <span class="text-3xl text-primary ${todo.isCompleted ? "line-through text-gray-400" : ""}">
+                                    ${todo.item}
+                                </span>
+                            </div>
+                            <div>
+                                <button class="btn btn-success">Edit</button>
+                                <button class="btn btn-secondary">Delete</button>
+                            </div>
+                        `;
 
-                            // Checkbox toggle
                             todoEl.querySelector("input[type=checkbox]").addEventListener("change", (e) => {
                                 fetch(`${API_BASE}/todo/${todo.id}`, {
                                     method: "PATCH",
@@ -72,13 +64,11 @@
                                 }).then(loadTodos);
                             });
 
-                            // Delete
                             todoEl.querySelector(".btn-secondary").addEventListener("click", () => {
                                 if (!confirm("Are you sure?")) return;
                                 fetch(`${API_BASE}/todo/${todo.id}`, { method: "DELETE" }).then(loadTodos);
                             });
 
-                            // Edit
                             todoEl.querySelector(".btn-success").addEventListener("click", () => {
                                 const input = document.getElementById("task-input");
                                 input.value = todo.item;
@@ -107,7 +97,6 @@
                     });
             }
 
-            // Add new todo
             function addTodo() {
                 const input = document.getElementById("task-input");
                 const value = input.value.trim();
@@ -124,8 +113,6 @@
             }
 
             document.getElementById("add-btn").onclick = addTodo;
-
-            // Initial load
             loadTodos();
         </script>
     </body>
