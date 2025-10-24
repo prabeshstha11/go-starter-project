@@ -1,4 +1,4 @@
-module github.com/prabeshstha/gotodo
+module github.com/prabeshstha11/gotodo
 
 go 1.25.2
 

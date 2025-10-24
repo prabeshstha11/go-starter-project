@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/prabeshstha/gotodo/db"
-	"github.com/prabeshstha/gotodo/routes"
+	"github.com/prabeshstha11/gotodo/db"
+	"github.com/prabeshstha11/gotodo/routes"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

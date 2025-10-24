@@ -3,9 +3,9 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/prabeshstha/gotodo/models"
+	"github.com/prabeshstha11/gotodo/models"
 
-	"github.com/prabeshstha/gotodo/db"
+	"github.com/prabeshstha11/gotodo/db"
 
 	"github.com/gin-gonic/gin"
 )

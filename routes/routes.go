@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/prabeshstha/gotodo/handlers"
+	"github.com/prabeshstha11/gotodo/handlers"
 
 	"github.com/gin-gonic/gin"
 )
